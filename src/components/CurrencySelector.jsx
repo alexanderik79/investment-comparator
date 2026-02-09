@@ -20,6 +20,7 @@ export default function CurrencySelector({ onChange }) {
         <option value="€">EUR (€)</option>
         <option value="$">USD ($)</option>
         <option value="£">GBP (£)</option>
+        <option value="₴">UAH (₴)</option>
       </select>
     </div>
   );

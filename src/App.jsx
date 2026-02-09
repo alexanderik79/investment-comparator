@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CalculatorTabs from './components/CalculatorTabs';
 import CurrencySelector from './components/CurrencySelector';
+import Footer from './components/Footer';
 
 function App() {
   const [currency, setCurrency] = useState('€');
@@ -16,6 +17,7 @@ function App() {
 
         <CalculatorTabs currency={currency} />
       </div>
+      <Footer/>
     </div>
   );
 }
