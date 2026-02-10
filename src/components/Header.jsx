@@ -24,9 +24,11 @@ export default function Header() {
     <header className="flex items-center justify-between py-6 mb-10 border-b border-gray-800">
       {/* Logo Section */}
       <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.4)] rotate-3">
-          <span className="text-gray-950 font-black text-2xl -rotate-3">P</span>
-        </div>
+<div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.4)] animate-heartbeat">
+  <span className="text-gray-950 font-black text-2xl">FP</span>
+</div>
+
+
         <div className="hidden sm:block">
           <h2 className="text-4xl font-black text-white tracking-tight">
                 Fin<span className="text-emerald-500">Pulse</span>
