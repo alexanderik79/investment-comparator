@@ -18,10 +18,10 @@ export default function RetirementPlanner({ currency }) {
   // Входные данные
   const [currentAge, setCurrentAge] = useState(30);
   const [retirementAge, setRetirementAge] = useState(60);
-  const [monthlySavings, setMonthlySavings] = useState(2000);
-  const [currentSavings, setCurrentSavings] = useState(100000);
+  const [monthlySavings, setMonthlySavings] = useState(200);
+  const [currentSavings, setCurrentSavings] = useState(10000);
   const [expectedReturn, setExpectedReturn] = useState(7);
-  const [monthlyBudget, setMonthlyBudget] = useState(3000); // Сколько хотим тратить на пенсии
+  const [monthlyBudget, setMonthlyBudget] = useState(1000); // Сколько хотим тратить на пенсии
 
   const [result, setResult] = useState({
     totalCapital: 0,

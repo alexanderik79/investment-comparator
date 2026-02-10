@@ -26,8 +26,8 @@ ChartJS.register(
 
 export default function CapitalGrowth({ currency }) {
   // Состояния для входных данных
-  const [startCapital, setStartCapital] = useState(100000);
-  const [annualContrib, setAnnualContrib] = useState(24000);
+  const [startCapital, setStartCapital] = useState(10000);
+  const [annualContrib, setAnnualContrib] = useState(2400);
   const [returnRate, setReturnRate] = useState(7);
   const [period, setPeriod] = useState(10);
 

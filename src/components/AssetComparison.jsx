@@ -23,8 +23,8 @@ ChartJS.register(
 );
 
 export default function AssetComparison({ currency }) {
-  const [initial, setInitial] = useState(100000);
-  const [monthly, setMonthly] = useState(2000);
+  const [initial, setInitial] = useState(10000);
+  const [monthly, setMonthly] = useState(200);
   const [years, setYears] = useState(20);
   const [rateAccum, setRateAccum] = useState(8.9);
   const [rateDist, setRateDist] = useState(7.5);
