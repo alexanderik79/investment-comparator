@@ -43,6 +43,9 @@ export default function AboutModal({ isOpen, onClose }) {
                 <p className="text-sm text-emerald-400 italic">
                   "Compound interest is the eighth wonder of the world. He who understands it, earns it; he who doesn't, pays it."
                 </p>
+                <p className="text-sm text-emerald-400 italic text-right">
+                    — Albert Einstein
+                </p>
               </div>
             </div>
 
