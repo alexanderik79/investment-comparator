@@ -49,25 +49,39 @@ export default function AboutModal({ isOpen, onClose }) {
               </div>
             </div>
 
-            {/* Core Capabilities */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-white">Capabilities</h3>
-              <ul className="space-y-3">
-                {[
-                  { t: 'Multi-Asset Analysis', d: 'Compare Equities, Gold, and Cash dynamic performance.', c: 'emerald' },
-                  { t: 'Inflation Shield', d: 'Real-world purchasing power adjustments.', c: 'blue' },
-                  { t: 'FIRE Simulation', d: '4% Safe Withdrawal Rate (SWR) modeling.', c: 'amber' }
-                ].map((item, idx) => (
-                  <li key={idx} className="flex gap-3">
-                    <div className={`mt-1.5 w-1.5 h-1.5 rounded-full bg-${item.c}-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]`} />
+                <h3 className="text-xl font-bold text-white">Capabilities</h3>
+                <ul className="space-y-3">
+                    
+                    {/* Item 1 */}
+                    <li className="flex gap-3">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                     <div>
-                      <p className="text-sm font-bold text-gray-200 leading-none">{item.t}</p>
-                      <p className="text-xs text-gray-500 mt-1">{item.d}</p>
+                        <p className="text-sm font-bold text-gray-200 leading-none">Multi-Asset Analysis</p>
+                        <p className="text-xs text-gray-500 mt-1">Compare Equities, Gold, and Cash performance.</p>
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+                    </li>
+
+                    {/* Item 2 */}
+                    <li className="flex gap-3">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+                    <div>
+                        <p className="text-sm font-bold text-gray-200 leading-none">Inflation Shield</p>
+                        <p className="text-xs text-gray-500 mt-1">Real-world purchasing power adjustments.</p>
+                    </div>
+                    </li>
+
+                    {/* Item 3 */}
+                    <li className="flex gap-3">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
+                    <div>
+                        <p className="text-sm font-bold text-gray-200 leading-none">FIRE Simulation</p>
+                        <p className="text-xs text-gray-500 mt-1">4% Safe Withdrawal Rate (SWR) modeling.</p>
+                    </div>
+                    </li>
+
+                </ul>
+                </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between pt-8 border-t border-gray-800">
