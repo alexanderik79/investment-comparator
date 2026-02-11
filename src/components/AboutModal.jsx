@@ -3,11 +3,11 @@ export default function AboutModal({ isOpen, onClose }) {
 
   return (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300"
+      className="fixed inset-0 z-[100] flex items-start justify-center p-4 bg-black/90 backdrop-blur-md overflow-y-auto animate-in fade-in duration-300"
       onClick={onClose}
     >
       <div 
-        className="bg-gray-900 border border-gray-800 w-full max-w-2xl rounded-[2.5rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300"
+        className="bg-gray-900 border border-gray-800 w-full max-w-2xl rounded-[2.5rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300 my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="h-2 bg-gradient-to-r from-emerald-500 via-blue-500 to-amber-500" />
