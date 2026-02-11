@@ -26,9 +26,9 @@ export default function Header() {
     <header className="flex items-center justify-between py-6 mb-10 border-b border-gray-800">
       {/* Logo Section */}
       <div className="flex items-center gap-3">
-<div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.4)] animate-heartbeat">
-  <span className="text-gray-950 font-black text-2xl">FP</span>
-</div>
+        <div className="w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.4)] animate-heartbeat">
+            <span className="text-gray-950 font-black text-2xl">FP</span>
+        </div>
 
 
         <div className="hidden sm:block">
@@ -43,7 +43,7 @@ export default function Header() {
       <div className="flex gap-3">
         <button
           onClick={() => setIsAboutOpen(true)}
-          className="px-5 py-2.5 text-sm font-bold text-gray-400 hover:text-white transition-all border border-gray-800 rounded-xl hover:bg-gray-800"
+          className="px-5 py-2.5 text-sm font-bold text-gray-400 hover:text-white transition-all border border-emerald-500 rounded-xl hover:bg-gray-800"
         >
             <FaCircleInfo size={18} />
         </button>
