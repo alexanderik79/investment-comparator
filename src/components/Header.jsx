@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import AboutModal from './AboutModal';
+import { IoShareSocialSharp } from "react-icons/io5";
+import { FaCircleInfo } from "react-icons/fa6";
 
 export default function Header() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -43,13 +45,13 @@ export default function Header() {
           onClick={() => setIsAboutOpen(true)}
           className="px-5 py-2.5 text-sm font-bold text-gray-400 hover:text-white transition-all border border-gray-800 rounded-xl hover:bg-gray-800"
         >
-          About
+            <FaCircleInfo size={18} />
         </button>
         <button
           onClick={handleShare}
           className="px-5 py-2.5 text-sm font-bold bg-white text-gray-950 rounded-xl hover:bg-emerald-400 transition-all shadow-xl active:scale-95"
         >
-          Share App
+            <IoShareSocialSharp size={18} />
         </button>
       </div>
 
