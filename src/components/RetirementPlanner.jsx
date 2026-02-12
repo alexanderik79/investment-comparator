@@ -223,7 +223,7 @@ export default function RetirementPlanner({ currency }) {
         </div>
       </div>
 
-      {/* Модальное окно AI */}
+      {/* Модальное окно для AI */}
       <AIModal 
         isOpen={isAIModalOpen} 
         onClose={() => setIsAIModalOpen(false)} 
@@ -242,4 +242,5 @@ export default function RetirementPlanner({ currency }) {
       />
     </div>
   );
+
 }
