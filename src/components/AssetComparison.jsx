@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -9,6 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler
 } from 'chart.js';
 import { calculateFutureValue } from '../utils/calculateFutureValue';
 
@@ -19,18 +21,20 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 );
 
 export default function AssetComparison({ currency }) {
-  const [initial, setInitial] = useState(10000);
-  const [monthly, setMonthly] = useState(200);
-  const [years, setYears] = useState(20);
-  const [rateAccum, setRateAccum] = useState(8.9);
-  const [rateDist, setRateDist] = useState(7.5);
-  const [rateGold, setRateGold] = useState(6.0);
-  const [inflation, setInflation] = useState(2.0);
-  const [adjustInflation, setAdjustInflation] = useState(true);
+  // Состояния с автосохранением в LocalStorage
+  const [initial, setInitial] = useLocalStorage('ac_initial', 10000);
+  const [monthly, setMonthly] = useLocalStorage('ac_monthly', 200);
+  const [years, setYears] = useLocalStorage('ac_years', 20);
+  const [rateAccum, setRateAccum] = useLocalStorage('ac_rateAccum', 8.9);
+  const [rateDist, setRateDist] = useLocalStorage('ac_rateDist', 7.5);
+  const [rateGold, setRateGold] = useLocalStorage('ac_rateGold', 6.0);
+  const [inflation, setInflation] = useLocalStorage('ac_inflation', 2.0);
+  const [adjustInflation, setAdjustInflation] = useLocalStorage('ac_adjustInfl', true);
 
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [tableRows, setTableRows] = useState([]);
@@ -44,6 +48,7 @@ export default function AssetComparison({ currency }) {
     const goldData = [];
     const rows = [];
 
+    // Генерируем данные для графика
     for (let y = 0; y <= years; y += Math.max(1, Math.floor(years / 20))) {
       labels.push(`${y} years`);
 
@@ -117,6 +122,7 @@ export default function AssetComparison({ currency }) {
 
   return (
     <div className="space-y-10">
+      {/* Сетка управления параметрами */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div>
           <label className="block text-sm mb-2 text-gray-300">Initial Amount ({currency})</label>
@@ -124,7 +130,7 @@ export default function AssetComparison({ currency }) {
             type="number"
             value={initial}
             onChange={(e) => setInitial(Number(e.target.value))}
-            className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+            className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white outline-none focus:border-emerald-500"
           />
         </div>
         <div>
@@ -133,7 +139,7 @@ export default function AssetComparison({ currency }) {
             type="number"
             value={monthly}
             onChange={(e) => setMonthly(Number(e.target.value))}
-            className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+            className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white outline-none focus:border-emerald-500"
           />
         </div>
         <div>
@@ -154,9 +160,9 @@ export default function AssetComparison({ currency }) {
               type="number"
               value={inflation}
               onChange={(e) => setInflation(Number(e.target.value))}
-              className="w-20 bg-gray-800 border border-gray-600 rounded-lg px-2 py-1 text-white"
+              className="w-20 bg-gray-800 border border-gray-600 rounded-lg px-2 py-1 text-white outline-none focus:border-emerald-500"
             />
-            <label className="flex items-center gap-1 text-xs text-gray-400">
+            <label className="flex items-center gap-1 text-xs text-gray-400 cursor-pointer">
               <input 
                 type="checkbox" 
                 checked={adjustInflation} 
@@ -168,18 +174,20 @@ export default function AssetComparison({ currency }) {
         </div>
       </div>
 
-      <div className="bg-gray-900 rounded-2xl p-6 h-96 border border-gray-800">
+      {/* Контейнер графика */}
+      <div className="bg-gray-900 rounded-2xl p-6 h-96 border border-gray-800 shadow-inner">
         <Line data={chartData} options={chartOptions} />
       </div>
 
+      {/* Карточки результатов */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
           <p className="text-gray-400 text-sm">Total Invested</p>
-          <p className="text-xl font-bold">{currency}{totalInvested.toLocaleString()}</p>
+          <p className="text-xl font-bold text-white">{currency}{totalInvested.toLocaleString()}</p>
         </div>
         <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
           <p className="text-emerald-400 text-sm">Accumulating</p>
-          <p className="text-xl font-bold">
+          <p className="text-xl font-bold text-white">
             {currency}{calculateFutureValue({ 
                 initial, monthly, annualRate: rateAccum, years, 
                 inflationRate: inflation, adjustForInflation: adjustInflation 
@@ -188,7 +196,7 @@ export default function AssetComparison({ currency }) {
         </div>
         <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
           <p className="text-blue-400 text-sm">Distributing</p>
-          <p className="text-xl font-bold">
+          <p className="text-xl font-bold text-white">
             {currency}{calculateFutureValue({ 
                 initial, monthly, annualRate: rateDist, years, 
                 inflationRate: inflation, adjustForInflation: adjustInflation 
@@ -197,7 +205,7 @@ export default function AssetComparison({ currency }) {
         </div>
         <div className="bg-gray-800 p-4 rounded-xl border border-gray-700">
           <p className="text-amber-400 text-sm">Gold</p>
-          <p className="text-xl font-bold">
+          <p className="text-xl font-bold text-white">
             {currency}{calculateFutureValue({ 
                 initial, monthly, annualRate: rateGold, years, 
                 inflationRate: inflation, adjustForInflation: adjustInflation 

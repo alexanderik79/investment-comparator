@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -15,14 +16,15 @@ import {
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 export default function RetirementPlanner({ currency }) {
-  // Входные данные
-  const [currentAge, setCurrentAge] = useState(30);
-  const [retirementAge, setRetirementAge] = useState(60);
-  const [monthlySavings, setMonthlySavings] = useState(200);
-  const [currentSavings, setCurrentSavings] = useState(10000);
-  const [expectedReturn, setExpectedReturn] = useState(7);
-  const [monthlyBudget, setMonthlyBudget] = useState(1000); // Сколько хотим тратить на пенсии
+  // Состояния с автосохранением в LocalStorage
+  const [currentAge, setCurrentAge] = useLocalStorage('rp_currentAge', 30);
+  const [retirementAge, setRetirementAge] = useLocalStorage('rp_retireAge', 60);
+  const [monthlySavings, setMonthlySavings] = useLocalStorage('rp_monthlySavings', 200);
+  const [currentSavings, setCurrentSavings] = useLocalStorage('rp_currentSavings', 10000);
+  const [expectedReturn, setExpectedReturn] = useLocalStorage('rp_expectedReturn', 7);
+  const [monthlyBudget, setMonthlyBudget] = useLocalStorage('rp_monthlyBudget', 1000);
 
+  // Состояния для расчетов и графика
   const [result, setResult] = useState({
     totalCapital: 0,
     monthlyPassiveIncome: 0,
@@ -33,7 +35,6 @@ export default function RetirementPlanner({ currency }) {
 
   useEffect(() => {
     const yearsToInvest = retirementAge - currentAge;
-    const months = yearsToInvest * 12;
     const monthlyRate = expectedReturn / 100 / 12;
 
     let capital = currentSavings;
@@ -43,7 +44,6 @@ export default function RetirementPlanner({ currency }) {
     for (let i = 0; i <= yearsToInvest; i++) {
       labels.push(`Age ${currentAge + i}`);
       
-      // Расчет капитала на конец года
       if (i > 0) {
         for (let m = 0; m < 12; m++) {
           capital = (capital + monthlySavings) * (1 + monthlyRate);
@@ -53,7 +53,7 @@ export default function RetirementPlanner({ currency }) {
     }
 
     const finalCapital = capital;
-    // Правило 4%: Капитал * 0.04 / 12 месяцев = безопасный ежемесячный доход
+    // Правило 4%: безопасный ежемесячный доход
     const passiveIncome = (finalCapital * 0.04) / 12;
     const isEnough = passiveIncome >= monthlyBudget;
 
@@ -79,46 +79,83 @@ export default function RetirementPlanner({ currency }) {
 
   return (
     <div className="space-y-8">
-      {/* Панель управления */}
+      {/* Панель управления (Инпуты) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Timeline */}
         <div className="space-y-4 bg-gray-800/30 p-5 rounded-2xl border border-gray-700">
           <h3 className="text-emerald-400 font-bold border-b border-gray-700 pb-2">Timeline</h3>
           <div>
             <label className="block text-xs text-gray-400 uppercase mb-1">Current Age: {currentAge}</label>
-            <input type="range" min="18" max="70" value={currentAge} onChange={(e) => setCurrentAge(Number(e.target.value))} className="w-full accent-emerald-500" />
+            <input 
+              type="range" 
+              min="18" 
+              max="70" 
+              value={currentAge} 
+              onChange={(e) => setCurrentAge(Number(e.target.value))} 
+              className="w-full accent-emerald-500" 
+            />
           </div>
           <div>
             <label className="block text-xs text-gray-400 uppercase mb-1">Retirement Age: {retirementAge}</label>
-            <input type="range" min={currentAge + 1} max="80" value={retirementAge} onChange={(e) => setRetirementAge(Number(e.target.value))} className="w-full accent-emerald-500" />
+            <input 
+              type="range" 
+              min={currentAge + 1} 
+              max="80" 
+              value={retirementAge} 
+              onChange={(e) => setRetirementAge(Number(e.target.value))} 
+              className="w-full accent-emerald-500" 
+            />
           </div>
         </div>
 
+        {/* Money */}
         <div className="space-y-4 bg-gray-800/30 p-5 rounded-2xl border border-gray-700">
           <h3 className="text-blue-400 font-bold border-b border-gray-700 pb-2">Money</h3>
           <div>
             <label className="block text-xs text-gray-400 mb-1">Current Savings ({currency})</label>
-            <input type="number" value={currentSavings} onChange={(e) => setCurrentSavings(Number(e.target.value))} className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-blue-500" />
+            <input 
+              type="number" 
+              value={currentSavings} 
+              onChange={(e) => setCurrentSavings(Number(e.target.value))} 
+              className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-blue-500" 
+            />
           </div>
           <div>
             <label className="block text-xs text-gray-400 mb-1">Monthly Contribution ({currency})</label>
-            <input type="number" value={monthlySavings} onChange={(e) => setMonthlySavings(Number(e.target.value))} className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-blue-500" />
+            <input 
+              type="number" 
+              value={monthlySavings} 
+              onChange={(e) => setMonthlySavings(Number(e.target.value))} 
+              className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-blue-500" 
+            />
           </div>
         </div>
 
+        {/* Target */}
         <div className="space-y-4 bg-gray-800/30 p-5 rounded-2xl border border-gray-700">
           <h3 className="text-amber-400 font-bold border-b border-gray-700 pb-2">Target</h3>
           <div>
             <label className="block text-xs text-gray-400 mb-1">Desired Monthly Budget ({currency})</label>
-            <input type="number" value={monthlyBudget} onChange={(e) => setMonthlyBudget(Number(e.target.value))} className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-amber-500" />
+            <input 
+              type="number" 
+              value={monthlyBudget} 
+              onChange={(e) => setMonthlyBudget(Number(e.target.value))} 
+              className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-amber-500" 
+            />
           </div>
           <div>
             <label className="block text-xs text-gray-400 mb-1">Expected Return (%)</label>
-            <input type="number" value={expectedReturn} onChange={(e) => setExpectedReturn(Number(e.target.value))} className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-amber-500" />
+            <input 
+              type="number" 
+              value={expectedReturn} 
+              onChange={(e) => setExpectedReturn(Number(e.target.value))} 
+              className="w-full bg-gray-900 border border-gray-600 rounded-lg px-3 py-2 text-white outline-none focus:border-amber-500" 
+            />
           </div>
         </div>
       </div>
 
-      {/* Результат (Индикатор FIRE) */}
+      {/* Индикатор FIRE */}
       <div className={`p-6 rounded-2xl border-2 flex flex-col md:flex-row items-center justify-between gap-6 ${result.isEnough ? 'bg-emerald-500/10 border-emerald-500/50' : 'bg-rose-500/10 border-rose-500/50'}`}>
         <div>
           <h2 className="text-2xl font-bold mb-1">

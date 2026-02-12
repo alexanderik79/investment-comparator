@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocalStorage } from '../hooks/useLocalStorage'; // Импортируем наш хук
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -25,13 +26,15 @@ ChartJS.register(
 );
 
 export default function CapitalGrowth({ currency }) {
-  // Состояния для входных данных
-  const [startCapital, setStartCapital] = useState(10000);
-  const [annualContrib, setAnnualContrib] = useState(2400);
-  const [returnRate, setReturnRate] = useState(7);
-  const [period, setPeriod] = useState(10);
+  // Используем useLocalStorage вместо useState для сохранения данных
+  // Ключи начинаются с 'cg_' (Capital Growth), чтобы не было конфликтов с другими вкладками
+  const [startCapital, setStartCapital] = useLocalStorage('cg_startCapital', 10000);
+  const [annualContrib, setAnnualContrib] = useLocalStorage('cg_annualContrib', 2400);
+  const [returnRate, setReturnRate] = useLocalStorage('cg_returnRate', 7);
+  const [period, setPeriod] = useLocalStorage('cg_period', 10);
 
-  // Состояния для результатов
+  // Эти состояния оставляем через useState, так как это вычисляемые данные (результаты),
+  // их не нужно хранить в памяти, они пересчитываются при загрузке из инпутов выше.
   const [chartData, setChartData] = useState({ labels: [], datasets: [] });
   const [summary, setSummary] = useState({
     final: 0,
